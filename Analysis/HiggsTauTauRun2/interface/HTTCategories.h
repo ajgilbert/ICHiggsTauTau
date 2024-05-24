@@ -1309,6 +1309,8 @@ class HTTCategories : public ModuleBase {
   float U1_;
   float U2_;
 
+  float bjet_phi_res_, bjet_eta_res_, bjet_E_res_, bparton_pt_, bparton_eta_;
+
  public:
   HTTCategories(std::string const& name);
 

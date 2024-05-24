@@ -104,6 +104,7 @@ namespace ic {
     // Get the stuff we need from the event
     Met * met = event->GetPtr<Met>(met_label_);
     std::vector<GenParticle *> parts;
+    //bool is_mc = event->ExistsInTree("genParticles");
     if(event->ExistsInTree("genParticles")) parts = event->GetPtrVec<GenParticle>("genParticles");
     std::vector<GenParticle *> sel_gen_parts;
     std::vector<GenParticle *> sel_vis_parts;
@@ -116,6 +117,8 @@ namespace ic {
     double vispX=0;
     double vispY=0;
     
+    // for data events genpX and genpY should always equal zero, which we assume to be correct for Z->mumu events
+
     for(unsigned i = 0; i < parts.size(); ++i){
       std::vector<bool> status_flags = parts[i]->statusFlags();
       unsigned id = abs(parts[i]->pdgid());

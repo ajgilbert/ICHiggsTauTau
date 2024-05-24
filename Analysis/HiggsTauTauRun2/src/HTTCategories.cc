@@ -143,7 +143,7 @@ namespace ic {
       //outtree_->Branch("event",             &event_);
       //outtree_->Branch("run",               &run_);
       //outtree_->Branch("lumi",               &lumi_);
-      //outtree_->Branch("wt",                &wt_.var_double);
+      outtree_->Branch("wt",                &wt_.var_double);
       outtree_->Branch("npu",               &n_pu_, "n_pu/F");
       outtree_->Branch("rho",               &rho_, "rho/F");
       //outtree_->Branch("puweight",          &pu_weight_, "pu_weight/F");
@@ -1338,6 +1338,11 @@ namespace ic {
       //    outtree_->Branch("dz_2",              &dz_2_.var_double);
       //  } 
       //}
+      //outtree_->Branch("bjet_phi_res", &bjet_phi_res_);
+      //outtree_->Branch("bjet_eta_res", &bjet_eta_res_);
+      //outtree_->Branch("bjet_E_res", &bjet_E_res_);
+      //outtree_->Branch("bparton_pt", &bparton_pt_);
+      //outtree_->Branch("bparton_eta", &bparton_eta_);
     }
     if(make_sync_ntuple_) {
       lOFile = new TFile(sync_output_name_.c_str(), "RECREATE");
@@ -5659,6 +5664,36 @@ namespace ic {
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
     if (make_mva_ntuple_) mvatree_->Fill();
+
+    // investigating b-jet angular resolutions
+   
+//    std::vector<GenParticle*> sel_parts = {}; 
+//
+//    std::vector<GenParticle*> const& parts = event->GetPtrVec<GenParticle>("genParticles");
+//    for (unsigned i = 0; i < parts.size(); ++i) {
+//      if (!(parts[i]->statusFlags()[IsHardProcess])) continue;
+//      if (parts[i]->status()!=23) continue;
+//      if(parts[parts[i]->mothers()[0]]->pdgid() == 2212) continue;
+//      unsigned id = abs(parts[i]->pdgid());
+//      if (id == 5) {
+//        sel_parts.push_back(parts[i]);
+//      }
+//    }
+//
+//    std::vector<std::pair<GenParticle*, ic::PFJet *>> b_matches = MatchByDR(sel_parts, uncleaned_jets, 0.5, true, true);
+//    if (b_matches.size()>0) {
+//        bjet_phi_res_ = ROOT::Math::VectorUtil::DeltaPhi(b_matches[0].first->vector(), b_matches[0].second->vector());
+//        bjet_eta_res_ = b_matches[0].second->vector().Rapidity() - b_matches[0].first->vector().Rapidity();
+//        bjet_E_res_ = (b_matches[0].second->vector().E() - b_matches[0].first->vector().E())/b_matches[0].first->vector().E(); 
+//        bparton_pt_ = b_matches[0].first->vector().Pt();
+//        bparton_eta_ = b_matches[0].first->vector().Rapidity();
+//    } else { 
+//        bjet_E_res_ = -9999;
+//        bjet_phi_res_ = -9999;
+//        bjet_eta_res_ = -9999;
+//        bparton_pt_ = - 9999;
+//        bparton_eta_ = -9999; 
+//    }
 
     return 0;
   }

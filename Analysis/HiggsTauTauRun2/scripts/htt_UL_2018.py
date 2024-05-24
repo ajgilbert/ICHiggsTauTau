@@ -21,8 +21,8 @@ JOBWRAPPER      = './scripts/generate_job.sh'
 JOBSUBMIT       = 'true'
 if "JOBWRAPPER" in os.environ:      JOBWRAPPER      = os.environ["JOBWRAPPER"]
 if "JOBSUBMIT"  in os.environ:      JOBSUBMIT       = os.environ["JOBSUBMIT"]
-print "Using job-wrapper:    " + JOBWRAPPER
-print "Using job-submission: " + JOBSUBMIT
+print("Using job-wrapper:    " + JOBWRAPPER)
+print("Using job-submission: " + JOBSUBMIT)
 
 CONDOR_TEMPLATE = """executable = ./jobs/%(EXE)s
 Proxy_path =/afs/cern.ch/user/a/adow/private/x509up
@@ -389,7 +389,7 @@ if options.proc_bkg or options.proc_all:
         job_num=0
         for FLATJSONPATCH in flatjsons:
             #nperjob = 40
-            nperjob=20
+            nperjob=10
             if 'DY' not in sa and 'EWKZ' not in sa:
                 FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','')
             if 'DY' not in sa and 'JetsToLNu' not in sa and 'WG' not in sa and 'EWKZ' not in sa and 'EWKW' not in sa:
@@ -398,8 +398,8 @@ if options.proc_bkg or options.proc_all:
             #    FLATJSONPATCH = FLATJSONPATCH.replace('^met_uncl_hi^met_uncl_lo','')
             if FLATJSONPATCH == 'job:sequences:all:^^' or FLATJSONPATCH == 'job:sequences:all:': continue
             n_scales = FLATJSONPATCH.count('_lo')*2 + FLATJSONPATCH.count('default')
-            if n_scales*n_channels>=24: nperjob = 10
-            if n_scales*n_channels>=48: nperjob=5
+            if n_scales*n_channels>=24: nperjob = 5
+            if n_scales*n_channels>=48: nperjob=2
 
             if options.jetmetuncerts and 'default' in FLATJSONPATCH: nperjob = int(math.ceil(float(nperjob)/2))
 

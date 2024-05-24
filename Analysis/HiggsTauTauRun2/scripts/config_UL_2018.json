@@ -6,7 +6,7 @@
     "timings":      true,
    //"channels":     ["mt","et","tt","zmm","zee","em"],
    // "channels":     ["mt","zmm","tt","et"],
-    "channels":     ["mt","zmm","zee"],
+    "channels":     ["zmm"],
 //   "channels":     ["tt","mt","et","em","zmm","zee"],
     "sequences": {
       "all":  ["default"]
@@ -67,7 +67,8 @@
     "do_pdf_wts": false,
     "do_qcd_scale_wts": false,
     //"output_folder" : "/vols/cms/dw515/outputs/MSSM/UL_Mar31_2018_sync_v2/",
-    "output_folder" : "/vols/cms/dw515/outputs/MRes/MRes_2024_Run2018/",
+    "output_folder" : "/vols/cms/dw515/outputs/MRes/MRes_2024_Run2018_v4/",
+    //"output_folder" : "/vols/cms/dw515/outputs/MRes/BJetRes/",
     "svfit_from_grid" : true,
     "read_all_svfit_files" : true,
     "svfit_folder"  : "/vols/cms/dw515/outputs/MSSM/mssm_2018_tres1_v2_svfit/",
