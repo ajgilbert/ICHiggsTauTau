@@ -12,7 +12,9 @@
 #include "boost/format.hpp"
 #include "TMath.h"
 #include "TLorentzVector.h"
-
+#include "TVector2.h"
+#include "Math/Vector2D.h"
+#include "Math/VectorUtil.h"
 
 double CPWeight(double x, double sm, double ps, double mm ){
         x*=M_PI/180; //convert to radians
@@ -3141,9 +3143,57 @@ namespace ic {
     event->Exists("genpT") ? gen_pt_ = event->Get<double>("genpT") : 0.;
     event->Exists("genEta") ? gen_eta_ = event->Get<double>("genEta") : 0.;
     event->Exists("genPhi") ? gen_phi_ = event->Get<double>("genPhi") : 0.;
-    
-    event->Exists("U1") ? U1_ = event->Get<double>("U1") : 0.;
-    event->Exists("U2") ? U2_ = event->Get<double>("U2") : 0.;
+
+     std::vector<GenParticle *> sel_invis_parts;
+     std::vector<GenParticle *> sel_gen_parts;
+  
+     if(event->ExistsInTree("genParticles")) { 
+        std::vector<GenParticle *> parts = event->GetPtrVec<GenParticle>("genParticles");
+        // for data events genpX and genpY should always equal zero, which we assume to be correct for Z->mumu events
+  
+        for(unsigned i = 0; i < parts.size(); ++i){
+          std::vector<bool> status_flags = parts[i]->statusFlags();
+          unsigned id = abs(parts[i]->pdgid());
+          unsigned status = abs(parts[i]->status());
+  	if ( (id >= 11 && id <= 16 && status_flags[FromHardProcess] && status==1) || status_flags[IsDirectHardProcessTauDecayProduct]) sel_gen_parts.push_back(parts[i]);
+          if ( (id == 11 || id == 13 || id == 15) && ((status_flags[FromHardProcess] && status==1) || status_flags[IsDirectHardProcessTauDecayProduct]) ) sel_invis_parts.push_back(parts[i]);
+        }
+     }
+  
+     double invispX = 0.;
+     double invispY = 0.;
+     for( unsigned i = 0; i < sel_invis_parts.size() ; ++i){
+       invispX+= sel_invis_parts[i]->vector().px();
+       invispY+= sel_invis_parts[i]->vector().py();
+     }
+     double genpX = 0.;
+     double genpY = 0.;
+     for( unsigned i = 0; i < sel_gen_parts.size() ; ++i){
+       genpX+= sel_gen_parts[i]->vector().px();
+       genpY+= sel_gen_parts[i]->vector().py();
+     }
+  
+     auto met_xyvec = ROOT::Math::XYVector(mets->vector().Px(),mets->vector().Py());
+     auto nus_xyvec = ROOT::Math::XYVector(invispX,invispY);
+ 
+     ROOT::Math::XYVector hadRec;
+     ROOT::Math::XYVector diLep;
+
+     if(channel_ == channel::zmm || channel_ == channel::zee) {
+         hadRec = met_xyvec;
+         diLep = ROOT::Math::XYVector(ditau->vector().Px(), ditau->vector().Py());
+     } else {
+         hadRec = met_xyvec - nus_xyvec;
+         diLep = ROOT::Math::XYVector(genpX, genpY);
+     }
+  
+    auto deltaPhiDiLepMEt = ROOT::Math::VectorUtil::DeltaPhi(diLep,hadRec);
+    U1_ = hadRec.R() * TMath::Cos(deltaPhiDiLepMEt);
+    U2_ = hadRec.R() * TMath::Sin(deltaPhiDiLepMEt);
+
+
+    //event->Exists("U1") ? U1_ = event->Get<double>("U1") : 0.;
+    //event->Exists("U2") ? U2_ = event->Get<double>("U2") : 0.;
 
     gen_nu_p_1_=-9999.;
     gen_nu_p_2_=-9999.;

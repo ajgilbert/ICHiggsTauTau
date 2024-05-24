@@ -6,7 +6,7 @@
     "timings":      true,
    //"channels":     ["mt","et","tt","zmm","zee","em"],
    // "channels":     ["mt","zmm","tt","et"],
-    "channels":     ["zmm"],
+    "channels":     ["zmm","mt"],
 //   "channels":     ["tt","mt","et","em","zmm","zee"],
     "sequences": {
       "all":  ["default"]
