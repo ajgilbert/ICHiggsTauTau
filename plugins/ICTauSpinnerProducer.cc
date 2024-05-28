@@ -151,7 +151,7 @@ bool ICTauSpinnerProducer::channelMatch(std::vector<reco::GenParticle> parts, st
     for(unsigned j=0;j<list.size(); j++){
       int pdgid = list[j];
       if(!signed_) pdgid = fabs(pdgid);
-      // if pdgid is found - erese it from the list and search for the next one
+      // if pdgid is found - erase it from the list and search for the next one
       if(pdgid==match) {
         found = true;
         list.erase(list.begin()+j);
@@ -201,30 +201,6 @@ void ICTauSpinnerProducer::produce(edm::Event& event,
   for(unsigned i=0; i<tau1_daughters.size(); ++i) simple_tau1_daughters.push_back(ConvertToSimplePart(tau1_daughters[i]));
   for(unsigned i=0; i<tau2_daughters.size(); ++i) simple_tau2_daughters.push_back(ConvertToSimplePart(tau2_daughters[i]));
 
-    TauSpinner::setHiggsParametersTR(-cos(2*M_PI*0),cos(2*M_PI*0),-sin(2*M_PI*0),-sin(2*M_PI*0));
-
-    Tauolapp::Tauola::setNewCurrents(0);
-
-    TauSpinner::calculateWeightFromParticlesH(simple_boson,simple_tau1,simple_tau2,simple_tau1_daughters,simple_tau2_daughters);
-
-    double WTp = TauSpinner::getWtamplitP();
-    double WTm = TauSpinner::getWtamplitM();
-
-    Tauolapp::Tauola::setNewCurrents(1);
-
-    TauSpinner::calculateWeightFromParticlesH(simple_boson,simple_tau1,simple_tau2,simple_tau1_daughters,simple_tau2_daughters);
-
-    //std::cout << "--------" << std::endl;
-    //std::cout << simple_tau1_daughters.size() << "    " << simple_tau2_daughters.size() << std::endl;
-    //std::cout << TauSpinner::getWtamplitP() << "    " << WTp << "    " << TauSpinner::getWtamplitP()/WTp <<  std::endl;
-    //std::cout << TauSpinner::getWtamplitM() << "    " << WTm << "    " << TauSpinner::getWtamplitM()/WTm <<std::endl;
-
-    WTp = TauSpinner::getWtamplitP()/WTp;
-    WTm = TauSpinner::getWtamplitM()/WTm;
- 
-    info_->set_weight("WTp",WTp,false);
-    info_->set_weight("WTm",WTm,false);
-
   for(unsigned i=0; i<theta_vec_.size(); ++i){
     double theta_val_ = theta_vec_[i].second;
     std::string weight_name_ = theta_vec_[i].first;
@@ -233,6 +209,7 @@ void ICTauSpinnerProducer::produce(edm::Event& event,
     Tauolapp::Tauola::setNewCurrents(0);
     double weight_ = TauSpinner::calculateWeightFromParticlesH(simple_boson,simple_tau1,simple_tau2,simple_tau1_daughters,simple_tau2_daughters); 
     info_->set_weight(weight_name_,weight_,false);
+    // also add weights for alternative hadronic currents (can be used for uncertainty estimates)
     Tauolapp::Tauola::setNewCurrents(1);
     double weight_2_ = TauSpinner::calculateWeightFromParticlesH(simple_boson,simple_tau1,simple_tau2,simple_tau1_daughters,simple_tau2_daughters); 
     info_->set_weight(weight_name_+"_alt",weight_2_,false);
