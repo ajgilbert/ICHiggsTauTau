@@ -2557,11 +2557,11 @@ namespace ic {
   }
 
   double IPAcoAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
-    //p1 = ip+, p2 = pi0-, p3 = pi+, p4 = pi-  
 
     TVector3 boost, n1, n2;
     if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
     else boost = (p3+p4).BoostVector();
+
     p1.Boost(-boost);
     p2.Boost(-boost);
     p3.Boost(-boost);
@@ -2572,16 +2572,136 @@ namespace ic {
 
     n1 = n1.Unit();
     n2 = n2.Unit();
-    
+
     double angle = acos(n1.Dot(n2));
     double sign;
 
-    //sign = p2.Vect().Unit().Dot(n1.Cross(n2));
-    sign = p4.Vect().Unit().Dot(n1.Cross(n2));   
+    sign = p4.Vect().Unit().Dot(n1.Cross(n2)); 
  
     if(sign<0) angle = 2*M_PI - angle;
     return angle;
   }
+
+  double IPAcoAngle_Test(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+
+    TVector3 boost, n1, n2;
+
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+
+
+    n1 = p1.Vect() - p1.Vect().Dot(p3.Vect().Unit())*p3.Vect().Unit();
+    n2 = p2.Vect() - p2.Vect().Dot(p4.Vect().Unit())*p4.Vect().Unit();
+
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+
+    double angle = acos(n1.Dot(n2));
+    double sign;
+
+    sign = p4.Vect().Unit().Dot(n1.Cross(n2));
+
+    if(sign<0) angle = 2*M_PI - angle;
+    return angle;
+  }
+
+
+  double IPAcoLinAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+    TVector3 boost, n1, n2;
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+
+    n1 = p1.Vect().Dot(p3.Vect().Unit())*p3.Vect().Unit();
+    n2 = p2.Vect().Dot(p4.Vect().Unit())*p4.Vect().Unit();
+
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+
+    double angle = acos(n1.Dot(n2));
+
+    return angle;
+  }
+
+  double IPAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+    TVector3 boost, n1, n2;
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+
+    n1 = p1.Vect();
+    n2 = p2.Vect();
+
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+
+    double angle = acos(n1.Dot(n2));
+
+    return angle;
+  }
+
+  std::pair<double,double> CTauAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+    TVector3 boost, n1, n2 ,n3, n4;
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+
+    n1 = p1.Vect();
+    n2 = p2.Vect();
+
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+
+    n3 = p3.Vect();
+    n4 = p4.Vect();
+
+    n3 = n3.Unit();
+    n4 = n4.Unit();
+
+    double c1 = n1.Dot(n3);
+    double c2 = n2.Dot(n4);
+
+    return std::make_pair(c1,c2);
+  }
+
+  std::pair<double,double> IPAcoAngleSep(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+    TVector3 boost, n1, n2;
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+
+    n1 = p1.Vect() - p1.Vect().Dot(p3.Vect().Unit())*p3.Vect().Unit();
+    n2 = p2.Vect() - p2.Vect().Dot(p4.Vect().Unit())*p4.Vect().Unit();
+
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+    double angle = acos(n1.Dot(n2));
+    double sign;
+    sign = p4.Vect().Unit().Dot(n1.Cross(n2));
+
+    if(sign<0) angle = 2*M_PI - angle;
+    return std::make_pair(angle,angle);
+  }
+
+
+
+
 
   double PolarimetricA1A1(TVector3 tau1, TVector3 tau2, TLorentzVector a1_1, TLorentzVector a1_2, std::vector<TLorentzVector> pis_1, std::vector<TLorentzVector> pis_2, std::vector<double> charges_1, std::vector<double> charges_2) {
     double angle = -9999.;

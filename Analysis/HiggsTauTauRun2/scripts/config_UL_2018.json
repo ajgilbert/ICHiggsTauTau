@@ -6,7 +6,7 @@
     "timings":      true,
    //"channels":     ["mt","et","tt","zmm","zee","em"],
    // "channels":     ["mt","zmm","tt","et"],
-    "channels":     ["mt","zmm"],
+    "channels":     ["mt"],
 //   "channels":     ["tt","mt","et","em","zmm","zee"],
     "sequences": {
       "all":  ["default"]
@@ -67,7 +67,7 @@
     "do_pdf_wts": false,
     "do_qcd_scale_wts": false,
     //"output_folder" : "/vols/cms/dw515/outputs/MSSM/UL_Mar31_2018_sync_v2/",
-    "output_folder" : "/vols/cms/dw515/outputs/MSSM/UL_Mar31_2018_v2/",
+    "output_folder" : "/vols/cms/ks1021/offline/trees/For_SUS_23_009/",
     "svfit_from_grid" : true,
     "read_all_svfit_files" : true,
     "svfit_folder"  : "/vols/cms/dw515/outputs/MSSM/mssm_2018_tres1_v2_svfit/",

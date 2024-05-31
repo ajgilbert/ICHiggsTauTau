@@ -1638,10 +1638,56 @@ namespace ic {
       mvatree_->Branch("genpT", &gen_pt_);
       mvatree_->Branch("gen_nu_p_1",   &gen_nu_p_1_);
       mvatree_->Branch("gen_nu_p_2",   &gen_nu_p_2_);
+      mvatree_->Branch("gen_nu_p_1",   &gen_nu_p_1_);
+      mvatree_->Branch("gen_nu_p_2",   &gen_nu_p_2_);
+      mvatree_->Branch("gen_nu_px_1",   &gen_nu_px_1_);
+      mvatree_->Branch("gen_nu_px_2",   &gen_nu_px_2_);
+      mvatree_->Branch("gen_nu_py_1",   &gen_nu_py_1_);
+      mvatree_->Branch("gen_nu_py_2",   &gen_nu_py_2_);
+      mvatree_->Branch("gen_nu_pz_1",   &gen_nu_pz_1_);
+      mvatree_->Branch("gen_nu_pz_2",   &gen_nu_pz_2_);
       mvatree_->Branch("gen_nu_phi_1", &gen_nu_phi_1_);
       mvatree_->Branch("gen_nu_phi_2", &gen_nu_phi_2_);
       mvatree_->Branch("gen_nu_eta_1", &gen_nu_eta_1_);
       mvatree_->Branch("gen_nu_eta_2", &gen_nu_eta_2_);
+
+      mvatree_->Branch("gen_vis_p_1",   &gen_vis_p_1_);
+      mvatree_->Branch("gen_vis_p_2",   &gen_vis_p_2_);
+      mvatree_->Branch("gen_vis_px_1",  &gen_vis_px_1_);
+      mvatree_->Branch("gen_vis_px_2",  &gen_vis_px_2_);
+      mvatree_->Branch("gen_vis_py_1",  &gen_vis_py_1_);
+      mvatree_->Branch("gen_vis_py_2",  &gen_vis_py_2_);
+      mvatree_->Branch("gen_vis_pz_1",  &gen_vis_pz_1_);
+      mvatree_->Branch("gen_vis_pz_2",  &gen_vis_pz_2_);
+      mvatree_->Branch("gen_vis_E_1",   &gen_vis_E_1_);
+      mvatree_->Branch("gen_vis_E_2",   &gen_vis_E_2_);
+      mvatree_->Branch("gen_vis_phi_1", &gen_vis_phi_1_);
+      mvatree_->Branch("gen_vis_phi_2", &gen_vis_phi_2_);
+      mvatree_->Branch("gen_vis_eta_1", &gen_vis_eta_1_);
+      mvatree_->Branch("gen_vis_eta_2", &gen_vis_eta_2_);
+
+      mvatree_->Branch("gen_neutral_p_1",   &gen_neutral_p_1_);
+      mvatree_->Branch("gen_neutral_p_2",   &gen_neutral_p_2_);
+      mvatree_->Branch("gen_neutral_px_1",   &gen_neutral_px_1_);
+      mvatree_->Branch("gen_neutral_px_2",   &gen_neutral_px_2_);
+      mvatree_->Branch("gen_neutral_py_1",   &gen_neutral_py_1_);
+      mvatree_->Branch("gen_neutral_py_2",   &gen_neutral_py_2_);
+      mvatree_->Branch("gen_neutral_pz_1",   &gen_neutral_pz_1_);
+      mvatree_->Branch("gen_neutral_pz_2",   &gen_neutral_pz_2_);
+      mvatree_->Branch("gen_neutral_E_1",   &gen_neutral_E_1_);
+      mvatree_->Branch("gen_neutral_E_2",   &gen_neutral_E_2_);
+      mvatree_->Branch("gen_neutral_phi_1", &gen_neutral_phi_1_);
+      mvatree_->Branch("gen_neutral_phi_2", &gen_neutral_phi_2_);
+      mvatree_->Branch("gen_neutral_eta_1", &gen_neutral_eta_1_);
+      mvatree_->Branch("gen_neutral_eta_2", &gen_neutral_eta_2_);
+
+      mvatree_->Branch("os",                &os_);
+      mvatree_->Branch("q1",                &q1_);
+      mvatree_->Branch("q2",                &q2_);
+      mvatree_->Branch("pt_vis",            &pt_vis_.var_double);
+      mvatree_->Branch("pt_tt",             &pt_tt_.var_double);
+      mvatree_->Branch("m_vis",             &m_vis_.var_double);
+
       mvatree_->Branch("pt_2",              &pt_2_.var_double);
       mvatree_->Branch("pt_1",              &pt_1_.var_double);
       mvatree_->Branch("iso_1", &iso_1_.var_float, "iso_1/F");
@@ -1758,6 +1804,10 @@ namespace ic {
       mvatree_->Branch("gam4_E_2", &gam4_E_2_);
       mvatree_->Branch("metx", &metx_);
       mvatree_->Branch("mety", &mety_);
+      mvatree_->Branch("gen_tau_metx", &gen_tau_metx_);
+      mvatree_->Branch("gen_tau_mety", &gen_tau_mety_);
+      mvatree_->Branch("gen_metx", &gen_metx_);
+      mvatree_->Branch("gen_mety", &gen_mety_);
       mvatree_->Branch("ip_x_1", &ip_x_1_);
       mvatree_->Branch("ip_y_1", &ip_y_1_);
       mvatree_->Branch("ip_z_1", &ip_z_1_);
@@ -1806,6 +1856,15 @@ namespace ic {
       mvatree_->Branch("svcov20_2", &svcov20_2_);
       mvatree_->Branch("svcov21_2", &svcov21_2_);
       mvatree_->Branch("svcov22_2", &svcov22_2_);
+      mvatree_->Branch("pvx", &pvx_);
+      mvatree_->Branch("pvy", &pvy_);
+      mvatree_->Branch("pvz", &pvz_);
+      mvatree_->Branch("q_pi_1", &q_pi_1_);
+      mvatree_->Branch("q_pi2_1", &q_pi2_1_);
+      mvatree_->Branch("q_pi3_1", &q_pi3_1_);
+      mvatree_->Branch("q_pi_2", &q_pi_2_);
+      mvatree_->Branch("q_pi2_2", &q_pi2_2_);
+      mvatree_->Branch("q_pi3_2", &q_pi3_2_);	  
     }
     return 0;
   }
@@ -2904,6 +2963,10 @@ namespace ic {
     } else {
       os_ = false;
     }
+
+    q1_ = ditau->At(0)->charge();
+    q2_ = ditau->At(1)->charge();
+
     //Fill extra lepton veto bools
     dilepton_veto_ = false;
     extraelec_veto_ = false;
@@ -3063,17 +3126,91 @@ namespace ic {
 
     gen_nu_p_1_=-9999.;
     gen_nu_p_2_=-9999.;
+    gen_nu_px_1_=-9999.;
+    gen_nu_px_2_=-9999.;
+    gen_nu_py_1_=-9999.;
+    gen_nu_py_2_=-9999.;
+    gen_nu_pz_1_=-9999.;
+    gen_nu_pz_2_=-9999.;
     gen_nu_phi_1_=-9999.;
     gen_nu_phi_2_=-9999.;
     gen_nu_eta_1_=-9999.;
     gen_nu_eta_2_=-9999.;
 
-    event->Exists("gen_nu_p_1")   ? gen_nu_p_1_   = event->Get<double>("gen_nu_p_1")   : -9999.;  
-    event->Exists("gen_nu_p_2")   ? gen_nu_p_2_   = event->Get<double>("gen_nu_p_2")   : -9999.; 
-    event->Exists("gen_nu_phi_1") ? gen_nu_phi_1_ = event->Get<double>("gen_nu_phi_1") : -9999.; 
-    event->Exists("gen_nu_phi_2") ? gen_nu_phi_2_ = event->Get<double>("gen_nu_phi_2") : -9999.; 
-    event->Exists("gen_nu_eta_1") ? gen_nu_eta_1_ = event->Get<double>("gen_nu_eta_1") : -9999.; 
-    event->Exists("gen_nu_eta_2") ? gen_nu_eta_2_ = event->Get<double>("gen_nu_eta_2") : -9999.; 
+    gen_vis_p_1_=-9999.;
+    gen_vis_p_2_=-9999.;
+    gen_vis_px_1_=-9999.;
+    gen_vis_px_2_=-9999.;
+    gen_vis_py_1_=-9999.;
+    gen_vis_py_2_=-9999.;
+    gen_vis_pz_1_=-9999.;
+    gen_vis_pz_2_=-9999.;
+    gen_vis_E_1_=-9999.;
+    gen_vis_E_2_=-9999.;
+    gen_vis_phi_1_=-9999.;
+    gen_vis_phi_2_=-9999.;
+    gen_vis_eta_1_=-9999.;
+    gen_vis_eta_2_=-9999.;
+
+    gen_neutral_p_1_=-9999.;
+    gen_neutral_p_2_=-9999.;
+    gen_neutral_px_1_=-9999.;
+    gen_neutral_px_2_=-9999.;
+    gen_neutral_py_1_=-9999.;
+    gen_neutral_py_2_=-9999.;
+    gen_neutral_pz_1_=-9999.;
+    gen_neutral_pz_2_=-9999.;
+    gen_neutral_E_1_=-9999.;
+    gen_neutral_E_2_=-9999.;
+    gen_neutral_phi_1_=-9999.;
+    gen_neutral_phi_2_=-9999.;
+    gen_neutral_eta_1_=-9999.;
+    gen_neutral_eta_2_=-9999.;
+
+    event->Exists("gen_nu_p_1")   ? gen_nu_p_1_   = event->Get<double>("gen_nu_p_1")   : -9999.;
+    event->Exists("gen_nu_p_2")   ? gen_nu_p_2_   = event->Get<double>("gen_nu_p_2")   : -9999.;
+    event->Exists("gen_nu_px_1")   ? gen_nu_px_1_   = event->Get<double>("gen_nu_px_1")   : -9999.;
+    event->Exists("gen_nu_px_2")   ? gen_nu_px_2_   = event->Get<double>("gen_nu_px_2")   : -9999.;
+    event->Exists("gen_nu_py_1")   ? gen_nu_py_1_   = event->Get<double>("gen_nu_py_1")   : -9999.;
+    event->Exists("gen_nu_py_2")   ? gen_nu_py_2_   = event->Get<double>("gen_nu_py_2")   : -9999.;
+    event->Exists("gen_nu_pz_1")   ? gen_nu_pz_1_   = event->Get<double>("gen_nu_pz_1")   : -9999.;
+    event->Exists("gen_nu_pz_2")   ? gen_nu_pz_2_   = event->Get<double>("gen_nu_pz_2")   : -9999.;
+    event->Exists("gen_nu_phi_1") ? gen_nu_phi_1_ = event->Get<double>("gen_nu_phi_1") : -9999.;
+    event->Exists("gen_nu_phi_2") ? gen_nu_phi_2_ = event->Get<double>("gen_nu_phi_2") : -9999.;
+    event->Exists("gen_nu_eta_1") ? gen_nu_eta_1_ = event->Get<double>("gen_nu_eta_1") : -9999.;
+    event->Exists("gen_nu_eta_2") ? gen_nu_eta_2_ = event->Get<double>("gen_nu_eta_2") : -9999.;
+
+    event->Exists("gen_vis_p_1")   ? gen_vis_p_1_   = event->Get<double>("gen_vis_p_1")   : -9999.;
+    event->Exists("gen_vis_p_2")   ? gen_vis_p_2_   = event->Get<double>("gen_vis_p_2")   : -9999.;
+    event->Exists("gen_vis_px_1")   ? gen_vis_px_1_   = event->Get<double>("gen_vis_px_1")   : -9999.;
+    event->Exists("gen_vis_px_2")   ? gen_vis_px_2_   = event->Get<double>("gen_vis_px_2")   : -9999.;
+    event->Exists("gen_vis_py_1")   ? gen_vis_py_1_   = event->Get<double>("gen_vis_py_1")   : -9999.;
+    event->Exists("gen_vis_py_2")   ? gen_vis_py_2_   = event->Get<double>("gen_vis_py_2")   : -9999.;
+    event->Exists("gen_vis_pz_1")   ? gen_vis_pz_1_   = event->Get<double>("gen_vis_pz_1")   : -9999.;
+    event->Exists("gen_vis_pz_2")   ? gen_vis_pz_2_   = event->Get<double>("gen_vis_pz_2")   : -9999.;
+    event->Exists("gen_vis_E_1")   ? gen_vis_E_1_   = event->Get<double>("gen_vis_E_1")   : -9999.;
+    event->Exists("gen_vis_E_2")   ? gen_vis_E_2_   = event->Get<double>("gen_vis_E_2")   : -9999.;
+    event->Exists("gen_vis_phi_1") ? gen_vis_phi_1_ = event->Get<double>("gen_vis_phi_1") : -9999.;
+    event->Exists("gen_vis_phi_2") ? gen_vis_phi_2_ = event->Get<double>("gen_vis_phi_2") : -9999.;
+    event->Exists("gen_vis_eta_1") ? gen_vis_eta_1_ = event->Get<double>("gen_vis_eta_1") : -9999.;
+    event->Exists("gen_vis_eta_2") ? gen_vis_eta_2_ = event->Get<double>("gen_vis_eta_2") : -9999.;
+
+
+    event->Exists("gen_neutral_p_1")   ? gen_neutral_p_1_   = event->Get<double>("gen_neutral_p_1")   : -9999.;
+    event->Exists("gen_neutral_p_2")   ? gen_neutral_p_2_   = event->Get<double>("gen_neutral_p_2")   : -9999.;
+    event->Exists("gen_neutral_px_1")   ? gen_neutral_px_1_   = event->Get<double>("gen_neutral_px_1")   : -9999.;
+    event->Exists("gen_neutral_px_2")   ? gen_neutral_px_2_   = event->Get<double>("gen_neutral_px_2")   : -9999.;
+    event->Exists("gen_neutral_py_1")   ? gen_neutral_py_1_   = event->Get<double>("gen_neutral_py_1")   : -9999.;
+    event->Exists("gen_neutral_py_2")   ? gen_neutral_py_2_   = event->Get<double>("gen_neutral_py_2")   : -9999.;
+    event->Exists("gen_neutral_pz_1")   ? gen_neutral_pz_1_   = event->Get<double>("gen_neutral_pz_1")   : -9999.;
+    event->Exists("gen_neutral_pz_2")   ? gen_neutral_pz_2_   = event->Get<double>("gen_neutral_pz_2")   : -9999.;
+    event->Exists("gen_neutral_E_1")   ? gen_neutral_E_1_   = event->Get<double>("gen_neutral_E_1")   : -9999.;
+    event->Exists("gen_neutral_E_2")   ? gen_neutral_E_2_   = event->Get<double>("gen_neutral_E_2")   : -9999.;
+    event->Exists("gen_neutral_phi_1") ? gen_neutral_phi_1_ = event->Get<double>("gen_neutral_phi_1") : -9999.;
+    event->Exists("gen_neutral_phi_2") ? gen_neutral_phi_2_ = event->Get<double>("gen_neutral_phi_2") : -9999.;
+    event->Exists("gen_neutral_eta_1") ? gen_neutral_eta_1_ = event->Get<double>("gen_neutral_eta_1") : -9999.;
+    event->Exists("gen_neutral_eta_2") ? gen_neutral_eta_2_ = event->Get<double>("gen_neutral_eta_2") : -9999.;
+
 
     uncorrmet_ = met_;
     if (event->Exists("met_norecoil")) uncorrmet_ = event->Get<double>("met_norecoil");
@@ -3817,6 +3954,13 @@ namespace ic {
     svcov20_2_=0;
     svcov21_2_=0;
     svcov22_2_=0;
+	
+    q_pi_1_ = 0.;
+    q_pi2_1_ = 0.;	
+    q_pi3_1_ = 0.;	
+    q_pi_2_ = 0.;
+    q_pi2_2_ = 0.;	
+    q_pi3_2_ = 0.;	
 
     use_refitted_vertex_ = false;
 
@@ -3868,7 +4012,17 @@ namespace ic {
       if(hads1.size()>2) hads1 = GetA1 (tau1, pfcands).first;
       if(hads2.size()>2) hads2 = GetA1 (tau2, pfcands).first;
 
-
+      if(tau1->hasSV()&&hads1.size()==3) {
+          q_pi_1_ = (double)hads1[0]->charge();
+          q_pi2_1_ = (double)hads1[1]->charge();
+          q_pi3_1_ = (double)hads1[2]->charge();		  
+       }
+	  
+      if(tau2->hasSV()&&hads2.size()==3) {
+          q_pi_2_ = (double)hads2[0]->charge();
+          q_pi2_2_ = (double)hads2[1]->charge();
+          q_pi3_2_ = (double)hads2[2]->charge();		  
+      }	  
 
       if(tau_decay_mode_1_<3.) {
         pi_px_1_=pi_tau1->vector().Px();
@@ -4141,6 +4295,14 @@ namespace ic {
         lvec2 = TLorentzVector(ip2, 0.);
 
         aco_angle_6_ = IPAcoAngle(lvec1, lvec2, lvec3, lvec4,false);
+        //double test = IPAcoAngle_Test(lvec1, lvec2, lvec3, lvec4,false); 
+        //std::cout << " " << std::endl;
+        //std::cout << ip_x_1_ << " " << ip_y_1_ << " " << ip_z_1_ << " " << lvec3.X() << " " << lvec3.Y() << " " << lvec3.Z() << " " << lvec3.E() << std::endl;
+        //std::cout << ip_x_1_ << " " << ip_y_1_ << " " << ip_z_1_ << " " << pi_px_1_ << " " << pi_py_1_  << " " << pi_pz_1_  << " " << pi_E_1_  << std::endl;
+        //std::cout << ip_x_2_ << " " << ip_y_2_ << " " << ip_z_2_ << " " << lvec4.X() << " " << lvec4.Y() << " " << lvec4.Z() << " " << lvec4.E() << std::endl;
+        //std::cout << ip_x_2_ << " " << ip_y_2_ << " " << ip_z_2_ << " " << pi_px_2_ << " " << pi_py_2_  << " " << pi_pz_2_  << " " << pi_E_2_  << std::endl;
+
+        //std::cout << test << std::endl;
         aco_sign_ = IPAcoSign(lvec1, lvec2, lvec3, lvec4,false);
 
         if(event_ % 2) {
@@ -4296,6 +4458,7 @@ namespace ic {
 
       else if((tau_decay_mode_1_==0&&tau_decay_mode_2_>=10) || (tau_decay_mode_1_>=10&&tau_decay_mode_2_==0)){
 
+
         TVector3 ip;
 
         ic::Tau const *tau_1;
@@ -4326,18 +4489,20 @@ namespace ic {
             a1_flag_ = true;
             if(a1_daughters.size()==3) a1_flag_2_ = true;
 
+          
+
             lvec2 = ConvertToLorentz(a1_daughters[0]->vector()); //pi zero from rho
             lvec4 = ConvertToLorentz(a1_daughters[1]->vector()); //pi charge from rho
+            
             aco_angle_5_ = IPAcoAngle(lvec1, lvec2, lvec3, lvec4,false);
+
             aco_sign_ = IPAcoSign(lvec1, lvec2, lvec3, lvec4,false);
 
-            double cp_sign_ = YRho(std::vector<Candidate*>({a1_daughters[0], a1_daughters[1]}),TVector3());
-
+            double cp_sign_ = YRho(std::vector<Candidate*>({a1_daughters[0], a1_daughters[1]}),TVector3());        
             if (cp_sign_<0) {
               if (aco_angle_5_<M_PI)  aco_angle_5_ = aco_angle_5_+M_PI;
               else                    aco_angle_5_ = aco_angle_5_-M_PI;
             }
-
             if(event_ % 2) {
               aco_angle_rand_ = aco_angle_5_;
               aco_sign_rand_ = aco_sign_;
@@ -4488,7 +4653,7 @@ namespace ic {
 
           std::vector<ic::PFCandidate*> a1_daughters_neg = GetA1(tau_neg, pfcands).first;
           std::vector<ic::PFCandidate*> a1_daughters_pos = GetA1(tau_pos, pfcands).first;
-
+          
           TVector3 svminuspv_1(
                 tau_neg->secondary_vertex().X() - primary_vtx->vx(),
                 tau_neg->secondary_vertex().Y() - primary_vtx->vy(),
@@ -4525,6 +4690,8 @@ namespace ic {
           };
 
           pv_angle_=PolarimetricA1A1(svminuspv_1, svminuspv_2, ConvertToLorentz(a1_daughters_neg[0]->vector()+a1_daughters_neg[1]->vector()+a1_daughters_neg[2]->vector()), ConvertToLorentz(a1_daughters_pos[0]->vector()+a1_daughters_pos[1]->vector()+a1_daughters_pos[2]->vector()), pis_1, pis_2, charges_1, charges_2);
+
+
         } else pv_angle_=-9999;
 
         if(a1_daughters_1.size()>2 && a1_daughters_2.size()>2) {

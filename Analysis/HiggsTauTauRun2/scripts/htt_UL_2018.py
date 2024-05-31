@@ -291,33 +291,33 @@ if options.proc_data or options.proc_all or options.calc_lumi:
 if options.proc_bkg or options.proc_all:
     central_samples = [
     # Drell-Yan LO
-    'DY1JetsToLL-LO',
-    'DY2JetsToLL-LO',
-    'DY3JetsToLL-LO',
-    'DY4JetsToLL-LO',
-    'DYJetsToLL-LO',
-    'DYJetsToLL-LO-ext1',
+#    'DY1JetsToLL-LO',
+#    'DY2JetsToLL-LO',
+#    'DY3JetsToLL-LO',
+#    'DY4JetsToLL-LO',
+#    'DYJetsToLL-LO',
+#    'DYJetsToLL-LO-ext1',
 
     # Low mass Drell Yan LO
-    'DYJetsToLL_M-10to50-LO',
+#    'DYJetsToLL_M-10to50-LO',
  
     # Drell-Yan NLO
-    'DYJetsToLL-NLO',
-    'DYJetsToLL_0J-NLO',
-    'DYJetsToLL_1J-NLO',
-    'DYJetsToLL_2J-NLO',
+#    'DYJetsToLL-NLO',
+#    'DYJetsToLL_0J-NLO',
+#    'DYJetsToLL_1J-NLO',
+#    'DYJetsToLL_2J-NLO',
    
     # Electroweak W and Z
-    'EWKWMinus2Jets_WToLNu',
-    'EWKWPlus2Jets_WToLNu',
-    'EWKZ2Jets_ZToLL',
+#    'EWKWMinus2Jets_WToLNu',
+#    'EWKWPlus2Jets_WToLNu',
+#    'EWKZ2Jets_ZToLL',
    
     # W + Jets L0
-    'WJetsToLNu-LO',
-    'W1JetsToLNu-LO',
-    'W2JetsToLNu-LO',
-    'W3JetsToLNu-LO',
-    'W4JetsToLNu-LO',
+#    'WJetsToLNu-LO',
+#    'W1JetsToLNu-LO',
+#    'W2JetsToLNu-LO',
+#    'W3JetsToLNu-LO',
+#    'W4JetsToLNu-LO',
    
 #    # W + Jets NLO
 #    'WJetsToLNu_0J-NLO',
@@ -326,19 +326,19 @@ if options.proc_bkg or options.proc_all:
 #    #'WJetsToLNu-NLO',
   
    # ttbar
-    'TTTo2L2Nu',
-    'TTToHadronic',
-    'TTToSemiLeptonic',
+#    'TTTo2L2Nu',
+#    'TTToHadronic',
+#    'TTToSemiLeptonic',
   
     # Split diboson (Missing Files: WZTo1L3Nu, WZTo2L2Q)
-    'WZTo1L1Nu2Q',
-    'WZTo3LNu',
-    'WWTo1L1Nu2Q',
-    'WWTo2L2Nu',
-    'WZTo1L3Nu',
-    'WZTo2Q2L',
-    'ZZTo2L2Nu',
-    'ZZTo4L',
+#    'WZTo1L1Nu2Q',
+#    'WZTo3LNu',
+#    'WWTo1L1Nu2Q',
+#    'WWTo2L2Nu',
+#    'WZTo1L3Nu',
+#    'WZTo2Q2L',
+#    'ZZTo2L2Nu',
+#    'ZZTo4L',
  
 #    # Triboson
 #    'WWZ',
@@ -351,14 +351,14 @@ if options.proc_bkg or options.proc_all:
 #    'ZZZ-ext1',
  
     # Other backgrounds
-    'WGToLNuG',
-    'Tbar-t',
-    'Tbar-tW',
-    'T-t',
-    'T-tW',
+#    'WGToLNuG',
+#    'Tbar-t',
+#    'Tbar-tW',
+#    'T-t',
+#    'T-tW',
  
 #    # SM Higgs
-#    'GluGluHToTauTau_M125',
+    'GluGluHToTauTau_M125',
 #    'VBFHToTauTau_M125',
 #    'WminusHToTauTau_M125',
 #    'WplusHToTauTau_M125',

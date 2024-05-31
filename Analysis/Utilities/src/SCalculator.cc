@@ -232,10 +232,10 @@ bool SCalculator::isOk(TString type1, TString type2, TLorentzVector tauMinus, st
   TLorentzVector zeroLV(0,0,0,0);
   TLorentzVector HadLVMinus(0,0,0,0);
   TLorentzVector HadLVPlus(0,0,0,0);
-  
+
   if(type1!="pion") Scalc1.SortPions(sumPionsMinus, sumPionsChargeMinus);
   if(type2!="pion") Scalc2.SortPions(sumPionsPlus, sumPionsChargePlus);
-  
+
   bool isgoodcharge=true;
   if(sumPionsChargeMinus.at(0)==-99 || sumPionsChargeMinus.at(1)==-99 || sumPionsChargeMinus.at(2)==-99 || sumPionsChargePlus.at(0)==-99 || sumPionsChargePlus.at(1)==-99 || sumPionsChargePlus.at(2)==-99)isgoodcharge=false;
 
@@ -247,8 +247,9 @@ bool SCalculator::isOk(TString type1, TString type2, TLorentzVector tauMinus, st
   
   tauandprodplus.push_back(tauPlus); 
   for(unsigned int i=0; i<sumPionsPlus.size();i++) {tauandprodplus.push_back(sumPionsPlus.at(i))/*;sumPionsPlus.at(i).Print()*/;if (sumPionsPlus.at(i)==zeroLV)pionszero=true;}   
-  
+
   Scalc1.Configure(tauandprodminus,tauandprodminus.at(0)+tauandprodplus.at(0), -1);
+
   TVector3 h1=Scalc1.pv();
   
   Scalc2.Configure(tauandprodplus,tauandprodminus.at(0)+tauandprodplus.at(0), +1);

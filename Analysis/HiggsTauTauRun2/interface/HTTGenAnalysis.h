@@ -41,18 +41,16 @@ class HTTGenAnalysis : public ModuleBase {
   CLASS_MEMBER(HTTGenAnalysis, bool, do_theory_uncert)
   CLASS_MEMBER(HTTGenAnalysis, TH2F*,bbtag_eff)
   CLASS_MEMBER(HTTGenAnalysis, std::string, mssm_mass  )
-  CLASS_MEMBER(HTTGenAnalysis, ic::era, era) 
- 
+  CLASS_MEMBER(HTTGenAnalysis, bool, make_mva_ntuple)
+  CLASS_MEMBER(HTTGenAnalysis, std::string, mva_output_name)
+  CLASS_MEMBER(HTTGenAnalysis, ic::era, era)
+  
   TTree *outtree_;
   TRandom3  *rand;
-  
+  TTree *mvatree_;
+  TFile *lOFile; 
+ 
   unsigned long long event_;
-  int run_;
-  int lumi_;
-
-  int prev_run_;
-  unsigned long long prev_event_;
-  int prev_lumi_;
 
   unsigned n_rho_;
   unsigned n_tot_;
@@ -82,6 +80,7 @@ class HTTGenAnalysis : public ModuleBase {
   double n_bjets_eta2p5_noscale_;
   double n_bjets_pt25_;
   int n_bpartons_;
+
   unsigned n_jets_nofilter_;
   unsigned n_jets_;
   unsigned n_jetsingap_;
@@ -162,6 +161,7 @@ class HTTGenAnalysis : public ModuleBase {
   unsigned n_pjets_;
 
 
+  float n_pu_;
   
   double pT_A_;
  
@@ -247,16 +247,6 @@ class HTTGenAnalysis : public ModuleBase {
   double wt_H_t_;
   double wt_H_b_; 
 
-  double wt_h_tb_msbar_;
-  double wt_h_t_msbar_;
-  double wt_h_b_msbar_;
-  double wt_A_tb_msbar_;
-  double wt_A_t_msbar_;
-  double wt_A_b_msbar_;
-  double wt_H_tb_msbar_;
-  double wt_H_t_msbar_;
-  double wt_H_b_msbar_;
-
   double wt_hfact_nom_;
   double wt_hfact_up_;
   double wt_hfact_down_;
@@ -283,6 +273,17 @@ class HTTGenAnalysis : public ModuleBase {
   
   TH2D z_pt_weights_sm_;
 
+  double aco_lin_angle_1_;
+  double angle_1_;
+  double spin_var_;
+  double spin_var_vis_;
+  double mass_undecayed_taus_;
+
+  double t_E_frac_1_;
+  double t_E_frac_2_;
+  double t_c_1_;
+  double t_c_2_;
+
   double p_aco_angle_1_;
   double p_aco_angle_2_;
   double p_aco_angle_3_;
@@ -292,6 +293,13 @@ class HTTGenAnalysis : public ModuleBase {
   double aco_sign_;
   double aco_sign_smear_;
   double aco_angle_smear_;
+  double pv_lin_angle_;
+  double pv_aco_angle_;
+  double costheta_1_;
+  double costheta_tf_1_;
+  double costheta_2_;
+  double costheta_tf_2_;
+
   double aco_angle_1_;
   double aco_angle_2_;
   double aco_angle_3_;
@@ -306,6 +314,8 @@ class HTTGenAnalysis : public ModuleBase {
   double cp_sign_6_;
   double mass1_, mass2_; 
   double a1_mass_;
+  int q_1_;
+  int q_2_;
 
   double pt_rho_pi_ = -1;
   double pt_rho_pi0_ = -1;
@@ -344,11 +354,6 @@ class HTTGenAnalysis : public ModuleBase {
   double Pfrac_1_; 
   double Pfrac_2_;
 
-  double pi0_E_1_;
-  double pi0_E_2_;
-  double pi_E_1_;
-  double pi_E_2_;
-
   double reco_pvx_;
   double reco_pvy_;
   double reco_pvz_;
@@ -374,9 +379,49 @@ class HTTGenAnalysis : public ModuleBase {
   double wt_ps_fsr_up_;
   double wt_ps_fsr_down_;
 
-  double tau_pt_1_v2p1_, tau_pt_1_v2p5_, gen_tau_pt_1_, gen_tau_eta_1_, tau_pt_1_hps_;
-  int gen_tau_dm_1_;
-  float n_pu_, n_pu_alt_;
+  float tau_pt_1_tt_, tau_pt_1_mt_, tau_pt_1_et_, tau_pt_1_sf_, gen_tau_pt_1_, gen_tau_eta_1_,tau_pt_2_tt_, tau_pt_2_mt_, tau_pt_2_et_, tau_pt_2_sf_, gen_tau_pt_2_, gen_tau_eta_2_;
+  int gen_tau_dm_1_, gen_tau_dm_2_;
+  float pi_px_1_, pi_py_1_, pi_pz_1_, pi_E_1_, pi_px_2_, pi_py_2_, pi_pz_2_, pi_E_2_;
+  float pi2_px_1_, pi2_py_1_, pi2_pz_1_, pi2_E_1_, pi2_px_2_, pi2_py_2_, pi2_pz_2_, pi2_E_2_;
+  float pi3_px_1_, pi3_py_1_, pi3_pz_1_, pi3_E_1_, pi3_px_2_, pi3_py_2_, pi3_pz_2_, pi3_E_2_;
+  float pi0_px_1_, pi0_py_1_, pi0_pz_1_, pi0_E_1_, pi0_px_2_, pi0_py_2_, pi0_pz_2_, pi0_E_2_;
+  float nu_px_1_, nu_py_1_, nu_pz_1_, nu_E_1_, nu_px_2_, nu_py_2_, nu_pz_2_, nu_E_2_;
+  float sv_x_1_, sv_y_1_, sv_z_1_, sv_x_2_, sv_y_2_, sv_z_2_;
+  float ip_x_1_, ip_y_1_, ip_z_1_, ip_x_2_, ip_y_2_, ip_z_2_;
+  float metx_, mety_;
+  int tau1_charge, tau2_charge;
+
+  double reco_pi_px_1_, reco_pi_py_1_, reco_pi_pz_1_, reco_pi_E_1_;
+  double reco_pi2_px_1_, reco_pi2_py_1_, reco_pi2_pz_1_, reco_pi2_E_1_;
+  double reco_pi3_px_1_, reco_pi3_py_1_, reco_pi3_pz_1_, reco_pi3_E_1_;
+  double reco_pi0_px_1_, reco_pi0_py_1_, reco_pi0_pz_1_, reco_pi0_E_1_;
+  double reco_sv_x_1_, reco_sv_y_1_, reco_sv_z_1_;
+  double reco_ip_x_1_, reco_ip_y_1_, reco_ip_z_1_;
+  double reco_metx_, reco_mety_;
+  int reco_dm_1_;
+ 
+  double reco_pi_px_2_, reco_pi_py_2_, reco_pi_pz_2_, reco_pi_E_2_;
+  double reco_pi2_px_2_, reco_pi2_py_2_, reco_pi2_pz_2_, reco_pi2_E_2_;
+  double reco_pi3_px_2_, reco_pi3_py_2_, reco_pi3_pz_2_, reco_pi3_E_2_;
+  double reco_pi0_px_2_, reco_pi0_py_2_, reco_pi0_pz_2_, reco_pi0_E_2_;
+  double reco_sv_x_2_, reco_sv_y_2_, reco_sv_z_2_;
+  double reco_ip_x_2_, reco_ip_y_2_, reco_ip_z_2_;
+  int reco_dm_2_;
+
+  double gammas_deta_1_;
+  double gammas_dphi_1_;
+  double gammas_deta_2_;
+  double gammas_dphi_2_;
+
+  double pi0s_deta_1_;
+  double pi0s_dphi_1_;
+  double pi0s_deta_2_;
+  double pi0s_dphi_2_;
+
+  double rho_deta_1_;
+  double rho_dphi_1_;
+  double rho_deta_2_;
+  double rho_dphi_2_;
  
   const BTagCalibration *calib;
   BTagCalibrationReader* reader_incl;
@@ -388,6 +433,28 @@ class HTTGenAnalysis : public ModuleBase {
   TGraph *ggh_ph_2jet_;
   TGraph *ggh_ph_3jet_;
   double wt_nnlops_;
+
+  unsigned quarks_initial_;
+  unsigned quarks_final_;
+  unsigned gluons_initial_;
+  unsigned gluons_final_;
+
+  float taupos_px_;
+  float taupos_py_;
+  float taupos_pz_;
+  float taupos_E_;
+  float tauneg_px_;
+  float tauneg_py_;
+  float tauneg_pz_;
+  float tauneg_E_;
+  float taupos_polvec_x_;
+  float taupos_polvec_y_;
+  float taupos_polvec_z_;
+  float taupos_polvec_E_;
+  float tauneg_polvec_x_;
+  float tauneg_polvec_y_;
+  float tauneg_polvec_z_;
+  float tauneg_polvec_E_;
  
  public:
   HTTGenAnalysis(std::string const& name);

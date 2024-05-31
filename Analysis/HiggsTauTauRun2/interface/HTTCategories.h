@@ -1266,13 +1266,6 @@ class HTTCategories : public ModuleBase {
   double svcov00_1_, svcov01_1_, svcov02_1_, svcov10_1_, svcov11_1_, svcov12_1_, svcov20_1_, svcov21_1_, svcov22_1_;
   double svcov00_2_, svcov01_2_, svcov02_2_, svcov10_2_, svcov11_2_, svcov12_2_, svcov20_2_, svcov21_2_, svcov22_2_;
 
-  double gen_nu_p_1_;
-  double gen_nu_p_2_;
-  double gen_nu_phi_1_;
-  double gen_nu_phi_2_;
-  double gen_nu_eta_1_;
-  double gen_nu_eta_2_;
-
   double pf_met_;
 
   double generatorWeight_;
@@ -1283,6 +1276,60 @@ class HTTCategories : public ModuleBase {
   double mt_triggerweight_ic_;
   double tauIDScaleFactorWeight_medium_DeepTau2017v2p1VSjet_2_;
   double tauIDScaleFactorWeight_highpt_deeptauid_2_;
+
+
+  double gen_nu_p_1_;
+  double gen_nu_p_2_;
+  double gen_nu_px_1_;
+  double gen_nu_px_2_;
+  double gen_nu_py_1_;
+  double gen_nu_py_2_;
+  double gen_nu_pz_1_;
+  double gen_nu_pz_2_;
+  double gen_nu_phi_1_;
+  double gen_nu_phi_2_;
+  double gen_nu_eta_1_;
+  double gen_nu_eta_2_;
+
+  double gen_vis_p_1_;
+  double gen_vis_p_2_;
+  double gen_vis_px_1_;
+  double gen_vis_px_2_;
+  double gen_vis_py_1_;
+  double gen_vis_py_2_;
+  double gen_vis_pz_1_;
+  double gen_vis_pz_2_;
+  double gen_vis_E_1_;
+  double gen_vis_E_2_;
+  double gen_vis_phi_1_;
+  double gen_vis_phi_2_;
+  double gen_vis_eta_1_;
+  double gen_vis_eta_2_;
+
+  double gen_neutral_p_1_;
+  double gen_neutral_p_2_;
+  double gen_neutral_px_1_;
+  double gen_neutral_px_2_;
+  double gen_neutral_py_1_;
+  double gen_neutral_py_2_;
+  double gen_neutral_pz_1_;
+  double gen_neutral_pz_2_;
+  double gen_neutral_E_1_;
+  double gen_neutral_E_2_;
+  double gen_neutral_phi_1_;
+  double gen_neutral_phi_2_;
+  double gen_neutral_eta_1_;
+  double gen_neutral_eta_2_;
+  
+  double q_pi_1_;
+  double q_pi2_1_;	
+  double q_pi3_1_;	
+  double q_pi_2_;
+  double q_pi2_2_;	
+  double q_pi3_2_;
+  
+  int q1_;
+  int q2_;
 
  public:
   HTTCategories(std::string const& name);

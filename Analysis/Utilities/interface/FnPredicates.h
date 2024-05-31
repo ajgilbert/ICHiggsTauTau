@@ -179,8 +179,76 @@ namespace ic {
     p->set_vector(out_vec);
   }
   double IPAcoAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+  double IPAcoAngle_Test(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+  double IPAcoLinAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+  double IPAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+  std::pair<double,double> CTauAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+  std::pair<double,double> IPAcoAngleSep(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
+
 
   double PolarimetricA1A1(TVector3 tau1, TVector3 tau2, TLorentzVector a1_1, TLorentzVector a1_2, std::vector<TLorentzVector> pis_1, std::vector<TLorentzVector> pis_2, std::vector<double> charges_1, std::vector<double> charges_2);
+
+  template<class T>
+  TLorentzVector PolarimetricVector(std::vector<T> pis, std::vector<T> pi0s, T tau, bool vis){
+    TVector3 out(0,0,0);
+    TLorentzVector Tau = ConvertToLorentz(tau->vector());
+    TVector3 boost = Tau.BoostVector();
+    if(pis.size()==1 && pi0s.size()==0) {
+      TLorentzVector pi = ConvertToLorentz(pis[0]->vector());
+      pi.Boost(-boost);
+      out = pi.Vect();
+    } else if(pis.size()==1 && pi0s.size()==1) {
+      TLorentzVector pi  = ConvertToLorentz(pis[0]->vector());
+      TLorentzVector pi0 = ConvertToLorentz(pi0s[0]->vector());
+      pi.Boost(-boost);
+      pi0.Boost(-boost);
+      Tau.Boost(-boost);
+      TLorentzVector q= pi  - pi0;
+      TLorentzVector P= Tau;
+      TLorentzVector N= Tau - pi - pi0;
+      if(!vis) out = P.M()*(2*(q*N)*q.Vect() - q.Mag2()*N.Vect()) * (1/ (2*(q*N)*(q*P) - q.Mag2()*(N*P)));
+      else out = P.M()*(2*(q*N)*q.Vect()) * (1/ (2*(q*N)*(q*P)));
+    } else if (pis.size()==3 && pi0s.size()==0) {
+      std::vector<TLorentzVector> TauA1andProd;
+
+      if(pis[1]->charge()==pis[2]->charge()) {
+        TauA1andProd = {
+          ConvertToLorentz(tau->vector()),
+          ConvertToLorentz(pis[0]->vector()),
+          ConvertToLorentz(pis[1]->vector()),
+          ConvertToLorentz(pis[2]->vector())
+        };
+      } else if(pis[0]->charge()==pis[2]->charge()) {
+        TauA1andProd = {
+          ConvertToLorentz(tau->vector()),
+          ConvertToLorentz(pis[1]->vector()),
+          ConvertToLorentz(pis[0]->vector()),
+          ConvertToLorentz(pis[2]->vector())
+        };
+      } else if(pis[0]->charge()==pis[1]->charge()) {
+        TauA1andProd = {
+          ConvertToLorentz(tau->vector()),
+          ConvertToLorentz(pis[2]->vector()),
+          ConvertToLorentz(pis[0]->vector()),
+          ConvertToLorentz(pis[1]->vector())
+        };
+      }
+      std::cout << tau->charge() << std::endl;
+      std::cout << TauA1andProd[0].Px() << " " << TauA1andProd[0].Py() << " " << TauA1andProd[0].Pz() << " " << TauA1andProd[0].E() << std::endl;
+      std::cout << TauA1andProd[1].Px() << " " << TauA1andProd[1].Py() << " " << TauA1andProd[1].Pz() << " " << TauA1andProd[1].E() << std::endl;
+      std::cout << TauA1andProd[2].Px() << " " << TauA1andProd[2].Py() << " " << TauA1andProd[2].Pz() << " " << TauA1andProd[2].E() << std::endl;
+      std::cout << TauA1andProd[3].Px() << " " << TauA1andProd[3].Py() << " " << TauA1andProd[3].Pz() << " " << TauA1andProd[3].E() << std::endl;
+      for (unsigned i=0; i<TauA1andProd.size(); ++i) TauA1andProd[i].Boost(-boost);
+      PolarimetricA1  a1pol;
+      a1pol.Configure(TauA1andProd,tau->charge());
+      TLorentzVector l_out = -a1pol.PVC();
+      l_out.Boost(boost);
+      return l_out;
+    }
+    TLorentzVector l_out(out,0.);
+    l_out.Boost(boost);
+    return l_out;
+  }
 
   double IPAcoSign(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF);
 
@@ -416,6 +484,29 @@ namespace ic {
     }
     return aco_angles;
   }
+
+  template<class T, class U>
+  double SpinVar(T const& p1, U const& p2) {
+    if (p1->charge() == p2->charge()) return -9999;
+
+    TLorentzVector l1, l2;
+    if(p1->charge()>0){
+      l1 = ConvertToLorentz(p1->vector());
+      l2 = ConvertToLorentz(p2->vector());
+    } else {
+      l2 = ConvertToLorentz(p1->vector());
+      l1 = ConvertToLorentz(p2->vector());
+    }
+    TLorentzVector ltotal = l1+l2;
+
+    TVector3 boost = ltotal.BoostVector();
+    l1.Boost(-boost);
+    l2.Boost(-boost);
+
+    double angle = acos(l1.Vect().Dot(ltotal.Vect())/(l1.Vect().Mag()*ltotal.Vect().Mag()));
+    return angle;
+  }
+
   
   template<class T>
   double YRho(std::vector<T> const& p, TVector3 boost) {

@@ -180,6 +180,9 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
     ROOT::Math::PtEtaPhiEVector neutrinos; 
     ROOT::Math::PtEtaPhiEVector tau_neutrinos; 
     ROOT::Math::PtEtaPhiEVector bosons; 
+    ROOT::Math::PtEtaPhiEVector gen_neutral_1;
+    ROOT::Math::PtEtaPhiEVector gen_neutral_2;
+
  
     for (unsigned i=0; i < particles.size(); ++i){
       std::vector<bool> status_flags_start = particles[i]->statusFlags();
@@ -290,13 +293,49 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
     std::vector<std::pair<Candidate*, GenParticle*> > subleading_lepton_match = MatchByDR(subleading_lepton, sel_particles, 0.2, true, true);
     std::vector<std::pair<Candidate*, GenJet*> > subleading_tau_match  = MatchByDR(subleading_lepton, gen_taus_ptr, 0.2, true, true);
 
-
    double gen_nu_p_1=-9999.;
    double gen_nu_p_2=-9999.;
+   double gen_nu_px_1=-9999.;
+   double gen_nu_px_2=-9999.;
+   double gen_nu_py_1=-9999.;
+   double gen_nu_py_2=-9999.;
+   double gen_nu_pz_1=-9999.;
+   double gen_nu_pz_2=-9999.;
    double gen_nu_phi_1=-9999.;
    double gen_nu_phi_2=-9999.;
    double gen_nu_eta_1=-9999.;
-   double gen_nu_eta_2=-9999.;    
+   double gen_nu_eta_2=-9999.;
+
+   double gen_vis_p_1=-9999.;
+   double gen_vis_p_2=-9999.;
+   double gen_vis_px_1=-9999.;
+   double gen_vis_px_2=-9999.;
+   double gen_vis_py_1=-9999.;
+   double gen_vis_py_2=-9999.;
+   double gen_vis_pz_1=-9999.;
+   double gen_vis_pz_2=-9999.;
+
+   double gen_vis_phi_1=-9999.;
+   double gen_vis_phi_2=-9999.;
+   double gen_vis_eta_1=-9999.;
+   double gen_vis_eta_2=-9999.;
+   double gen_vis_E_1=-9999.;
+   double gen_vis_E_2=-9999.;
+
+   double gen_neutral_p_1=-9999.;
+   double gen_neutral_p_2=-9999.;
+   double gen_neutral_px_1=-9999.;
+   double gen_neutral_px_2=-9999.;
+   double gen_neutral_py_1=-9999.;
+   double gen_neutral_py_2=-9999.;
+   double gen_neutral_pz_1=-9999.;
+   double gen_neutral_pz_2=-9999.;
+   double gen_neutral_phi_1=-9999.;
+   double gen_neutral_phi_2=-9999.;
+   double gen_neutral_eta_1=-9999.;
+   double gen_neutral_eta_2=-9999.;
+   double gen_neutral_E_1=-9999.;
+   double gen_neutral_E_2=-9999.;
 
    mcorigin gen_match_1 = mcorigin::fake;
    mcorigin gen_match_2 = mcorigin::fake;
@@ -320,13 +359,16 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
      bool found=false;
      for (auto id: daughter_ids) {
        for(auto p: particles) {
-         if(p->id() == id && p->charge()!=0) {
+         if(p->id() == id && p->charge()!=0 && !found) {
            gen_ip_1 = GenIP(h,p);
            found=true;
            break; 
          }
+         if(p->id() == id && p->charge()==0 && fabs(p->pdgid())==22) {
+           gen_neutral_1 += p->vector();
+           break;
+         }
        }
-       if (found) break;
      } 
    }
 
@@ -363,9 +405,30 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
   //     leading_lepton_match_DR = DR(leading_tau_match.at(0).first,leading_tau_match.at(0).second);
        gen_match_1 = mcorigin::tauHad;
        tauFlag1 = leading_tau_match.at(0).second->flavour();
+
        gen_nu_p_1=leading_tau_match.at(0).second->nu_vector().P();
+       gen_nu_px_1=leading_tau_match.at(0).second->nu_vector().Px();
+       gen_nu_py_1=leading_tau_match.at(0).second->nu_vector().Py();
+       gen_nu_pz_1=leading_tau_match.at(0).second->nu_vector().Pz();
        gen_nu_phi_1=leading_tau_match.at(0).second->nu_vector().Phi();
        gen_nu_eta_1=leading_tau_match.at(0).second->nu_vector().Rapidity();
+
+       gen_vis_p_1=leading_tau_match.at(0).second->vector().P();
+       gen_vis_px_1=leading_tau_match.at(0).second->vector().Px();
+       gen_vis_py_1=leading_tau_match.at(0).second->vector().Py();
+       gen_vis_pz_1=leading_tau_match.at(0).second->vector().Pz();
+       gen_vis_E_1=leading_tau_match.at(0).second->vector().E();
+       gen_vis_phi_1=leading_tau_match.at(0).second->vector().Phi();
+       gen_vis_eta_1=leading_tau_match.at(0).second->vector().Rapidity();
+
+       gen_neutral_p_1=gen_neutral_1.P();
+       gen_neutral_px_1=gen_neutral_1.Px();
+       gen_neutral_py_1=gen_neutral_1.Py();
+       gen_neutral_pz_1=gen_neutral_1.Pz();
+       gen_neutral_E_1=gen_neutral_1.E();
+       gen_neutral_phi_1=gen_neutral_1.Phi();
+       gen_neutral_eta_1=gen_neutral_1.Rapidity();
+
       }
    
 //Now for subleading lepton:
@@ -387,13 +450,16 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
      bool found=false;
      for (auto id: daughter_ids) {
        for(auto p: particles) {
-         if(p->id() == id && p->charge()!=0) {
+         if(p->id() == id && p->charge()!=0 && !found) {
            gen_ip_2 = GenIP(h,p);
            found=true;
            break;
          }
+         if(p->id() == id && p->charge()==0 && fabs(p->pdgid())==22) {
+           gen_neutral_2 += p->vector();
+           break;
+         }
        }
-       if (found) break;
      }
    }
 
@@ -431,8 +497,28 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
        gen_match_2 = mcorigin::tauHad;
        tauFlag2 = subleading_tau_match.at(0).second->flavour(); 
        gen_nu_p_2=subleading_tau_match.at(0).second->nu_vector().P();
+       gen_nu_px_2=subleading_tau_match.at(0).second->nu_vector().Px();
+       gen_nu_py_2=subleading_tau_match.at(0).second->nu_vector().Py();
+       gen_nu_pz_2=subleading_tau_match.at(0).second->nu_vector().Pz();
        gen_nu_phi_2=subleading_tau_match.at(0).second->nu_vector().Phi();
        gen_nu_eta_2=subleading_tau_match.at(0).second->nu_vector().Rapidity();
+
+       gen_vis_p_2=subleading_tau_match.at(0).second->vector().P();
+       gen_vis_px_2=subleading_tau_match.at(0).second->vector().Px();
+       gen_vis_py_2=subleading_tau_match.at(0).second->vector().Py();
+       gen_vis_pz_2=subleading_tau_match.at(0).second->vector().Pz();
+       gen_vis_E_2=subleading_tau_match.at(0).second->vector().E();
+       gen_vis_phi_2=subleading_tau_match.at(0).second->vector().Phi();
+       gen_vis_eta_2=subleading_tau_match.at(0).second->vector().Rapidity();
+
+       gen_neutral_p_2=gen_neutral_2.P();
+       gen_neutral_px_2=gen_neutral_2.Px();
+       gen_neutral_py_2=gen_neutral_2.Py();
+       gen_neutral_pz_2=gen_neutral_2.Pz();
+       gen_neutral_E_2=gen_neutral_2.E();
+       gen_neutral_phi_2=gen_neutral_2.Phi();
+       gen_neutral_eta_2=gen_neutral_2.Rapidity();
+
       }
 
    if(gen_match_1 == mcorigin::tauHad) event->Add("leading_gen_tau", new ic::GenJet(*(leading_tau_match.at(0).second)));
@@ -472,12 +558,52 @@ TVector3 GenIP (ic::GenParticle *h, ic::GenParticle *t) {
    event->Add("gen_ip_2", gen_ip_2);
 
    event->Add("gen_nu_p_1",gen_nu_p_1);
+   event->Add("gen_nu_px_1",gen_nu_px_1);
+   event->Add("gen_nu_py_1",gen_nu_py_1);
+   event->Add("gen_nu_pz_1",gen_nu_pz_1);
    event->Add("gen_nu_phi_1",gen_nu_phi_1);
    event->Add("gen_nu_eta_1",gen_nu_eta_1);
 
    event->Add("gen_nu_p_2",gen_nu_p_2);
+   event->Add("gen_nu_px_2",gen_nu_px_2);
+   event->Add("gen_nu_py_2",gen_nu_py_2);
+   event->Add("gen_nu_pz_2",gen_nu_pz_2);
    event->Add("gen_nu_phi_2",gen_nu_phi_2);
    event->Add("gen_nu_eta_2",gen_nu_eta_2);
+
+   event->Add("gen_vis_p_1",  gen_vis_p_1);
+   event->Add("gen_vis_px_1",  gen_vis_px_1);
+   event->Add("gen_vis_py_1",  gen_vis_py_1);
+   event->Add("gen_vis_pz_1",  gen_vis_pz_1);
+   event->Add("gen_vis_E_1",  gen_vis_E_1);
+   event->Add("gen_vis_phi_1",gen_vis_phi_1);
+   event->Add("gen_vis_eta_1",gen_vis_eta_1);
+
+   event->Add("gen_vis_p_2",  gen_vis_p_2);
+   event->Add("gen_vis_px_2",  gen_vis_px_2);
+   event->Add("gen_vis_py_2",  gen_vis_py_2);
+   event->Add("gen_vis_pz_2",  gen_vis_pz_2);
+   event->Add("gen_vis_E_2",  gen_vis_E_2);
+   event->Add("gen_vis_phi_2",gen_vis_phi_2);
+   event->Add("gen_vis_eta_2",gen_vis_eta_2);
+
+   event->Add("gen_neutral_p_1",  gen_neutral_p_1);
+   event->Add("gen_neutral_px_1",  gen_neutral_px_1);
+   event->Add("gen_neutral_py_1",  gen_neutral_py_1);
+   event->Add("gen_neutral_pz_1",  gen_neutral_pz_1);
+   event->Add("gen_neutral_E_1",  gen_neutral_E_1);
+   event->Add("gen_neutral_phi_1",gen_neutral_phi_1);
+   event->Add("gen_neutral_eta_1",gen_neutral_eta_1);
+
+   event->Add("gen_neutral_p_2",  gen_neutral_p_2);
+   event->Add("gen_neutral_px_2",  gen_neutral_px_2);
+   event->Add("gen_neutral_py_2",  gen_neutral_py_2);
+   event->Add("gen_neutral_pz_2",  gen_neutral_pz_2);
+   event->Add("gen_neutral_E_2",  gen_neutral_E_2);
+   event->Add("gen_neutral_phi_2",gen_neutral_phi_2);
+   event->Add("gen_neutral_eta_2",gen_neutral_eta_2);
+
+
 
     if(ngenjets_){
       //Get gen-jets collection, filter Higgs decay products and add Njets variable to event
